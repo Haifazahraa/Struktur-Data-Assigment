@@ -219,9 +219,47 @@ Program utama meminta pengguna memasukkan dua bilangan, yaitu bilangan untuk dih
 ![Capture2](https://github.com/Haifazahraa/Struktur-Data-Assigment/assets/162522762/af253361-086e-4e79-a62d-8b33860a0a1c)
 
 ## 2.Jelaskan fungsi dari class dan struct secara detail dan berikan contoh programnya
+
+```C++
+#include <iostream>
+using namespace std;
+
+class Person {
+public:
+    string name;
+    int age;
+
+    Person(string n, int a) : name(n), age(a) {}
+
+    void display() {
+        cout << "Name: " << name << endl;
+        cout << "Age: " << age << endl;
+    }
+};
+
+int main() {
+
+    Person person1("Zahra", 25);
+    Person person2("Damar", 30);
+
+
+    person1.display();
+    person2.display();
+
+    return 0;
+}
+
+```
+#### Output:
+
+![Capture4](https://github.com/Haifazahraa/Struktur-Data-Assigment/assets/162522762/93b41168-2098-494a-a6b3-7eebefe4618b)
+
 Class adalah sebuah konstruksi dalam pemrograman yang memungkinkan pengguna untuk mendefinisikan sebuah tipe data baru yang menyatukan data (variabel) dan fungsi (metode) ke dalam satu entitas yang disebut objek. Ini membantu dalam pembuatan kode yang lebih terstruktur, modular, dan mudah diorganisir.
 
 Struct (structure) adalah tipe data yang memungkinkan pengguna untuk menggabungkan beberapa jenis data yang berbeda ke dalam satu unit. Struct serupa dengan class dalam hal membuat tipe data baru dengan gabungan data yang berbeda, tetapi perbedaannya terletak pada aksesibilitas default: anggota dari struct secara defaultnya bersifat public, sementara pada class secara defaultnya bersifat private.
+
+#### code Screenshot:
+![Capture5](https://github.com/Haifazahraa/Struktur-Data-Assigment/assets/162522762/832b200b-429c-4373-b304-329c207def67)
 
 ## 3. Buat dan jelaskan program menggunakan fungsi map dan jelaskan perbedaan dari array dengan map.
 
@@ -247,6 +285,13 @@ int main() {
 }
 
 ```
+#### Output:
+![Capture3](https://github.com/Haifazahraa/Struktur-Data-Assigment/assets/162522762/f10b865f-4593-4ccd-b1aa-0e54f5ff3e1a)
+
+#### code Screenshot:
+
+![Capture6](https://github.com/Haifazahraa/Struktur-Data-Assigment/assets/162522762/b34be476-63e7-46c1-a033-182a8b110a18)
+
 Program menggunakan pustaka `map` untuk memetakan nama (dalam bentuk string) ke nilai (dalam bentuk integer). Kemudian, nilai-nilai tersebut dimasukkan ke dalam peta untuk setiap nama. Setelahnya, program mencetak nilai yang terhubung dengan setiap nama yang telah dimasukkan ke dalam peta. Dengan menggunakan map, program memungkinkan pengelolaan dan akses data yang efisien.
 
 Array dan map memiliki perbedaan dalam struktur data, indeks, ukuran, tipe kunci, dan penggunaan. Array adalah struktur data berurutan dengan indeks numerik, sementara map adalah struktur data berpasangan kunci-nilai yang memungkinkan akses berdasarkan kunci unik. Array cocok untuk kumpulan data sederhana, sedangkan map berguna untuk menyimpan dan mengakses data berpasangan tanpa urutan tertentu.
