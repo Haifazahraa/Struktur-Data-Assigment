@@ -476,6 +476,7 @@ int main() {
     return 0;
 }
 ```
+Program ini menggunakan dua kelas utama, yaitu Node dan DoubleLinkedList. Kelas Node digunakan untuk mendefinisikan struktur node dalam Double Linked List dengan atribut data (integer) serta pointer prev dan next. Kelas DoubleLinkedList mengelola operasi-operasi pada Double Linked List seperti menambahkan data menghapus data update mengubah data menghapus semua data, dan menampilkan data. Program memiliki menu pilihan yang mencakup operasi-operasi tersebut dan menggunakan loop while(true) dalam fungsi main untuk menampilkan menu pilihan kepada pengguna.
 
 ## Unguided 
 
@@ -486,18 +487,149 @@ int main() {
 #include <iostream>
 using namespace std;
 
+struct Node {
+    string nama;
+    int usia;
+    Node* next;
+};
+
+class LinkedList {
+private:
+    Node* head;
+
+public:
+    LinkedList() {
+        head = nullptr;
+    }
+
+    void insertFront(string nama, int usia) {
+        Node* newNode = new Node;
+        newNode->nama = nama;
+        newNode->usia = usia;
+        newNode->next = head;
+        head = newNode;
+    }
+
+    void insertEnd(string nama, int usia) {
+        Node* newNode = new Node;
+        newNode->nama = nama;
+        newNode->usia = usia;
+        newNode->next = nullptr;
+
+        if (head == nullptr) {
+            head = newNode;
+            return;
+        }
+
+        Node* temp = head;
+        while (temp->next != nullptr) {
+            temp = temp->next;
+        }
+        temp->next = newNode;
+    }
+
+    void insertAfter(string nama, int usia, string key) {
+        Node* temp = head;
+        while (temp != nullptr && temp->nama != key) {
+            temp = temp->next;
+        }
+
+        if (temp == nullptr) {
+            cout << "Data " << key << " tidak ditemukan." << endl;
+            return;
+        }
+
+        Node* newNode = new Node;
+        newNode->nama = nama;
+        newNode->usia = usia;
+        newNode->next = temp->next;
+        temp->next = newNode;
+    }
+
+    void deleteNode(string key) {
+        Node* temp = head;
+        Node* prev = nullptr;
+
+        if (temp != nullptr && temp->nama == key) {
+            head = temp->next;
+            delete temp;
+            return;
+        }
+
+        while (temp != nullptr && temp->nama != key) {
+            prev = temp;
+            temp = temp->next;
+        }
+
+        if (temp == nullptr) {
+            cout << "Data " << key << " tidak ditemukan." << endl;
+            return;
+        }
+
+        prev->next = temp->next;
+        delete temp;
+    }
+
+    void modifyData(string oldNama, string newNama, int newUsia) {
+        Node* temp = head;
+        while (temp != nullptr && temp->nama != oldNama) {
+            temp = temp->next;
+        }
+
+        if (temp == nullptr) {
+            cout << "Data " << oldNama << " tidak ditemukan." << endl;
+            return;
+        }
+
+        temp->nama = newNama;
+        temp->usia = newUsia;
+    }
+
+    void displayList() {
+        Node* temp = head;
+        while (temp != nullptr) {
+            cout << temp->nama << " " << temp->usia << endl;
+            temp = temp->next;
+        }
+    }
+};
+
 int main() {
-    cout << "ini adalah file code unguided praktikan" << endl;
+    LinkedList list;
+
+    // a. Insert data
+    list.insertFront("Haifa", 19);
+    list.insertEnd("Zahra", 20);
+    list.insertEnd("Azzimmi", 18);
+    list.insertEnd("Zalfa", 12);
+    list.insertEnd("Damar", 20);
+    list.insertEnd("Wulan", 11);
+    list.insertEnd("Lintang", 15);
+
+    // b. Delete data
+    list.deleteNode("Haifa");
+
+    // c. Insert data after a key
+    list.insertAfter("Zahra", 20, "Damar");
+
+    // d. Insert data at the beginning
+    list.insertFront("Zalfa", 12);
+
+    // e. Modify data
+    list.modifyData("Haifa", "Lintang", 15);
+
+    // f. Display all data
+    list.displayList();
+
     return 0;
 }
 ```
 #### Output:
-![240302_00h00m06s_screenshot](https://github.com/suxeno/Struktur-Data-Assignment/assets/111122086/6d1727a8-fb77-4ecf-81ff-5de9386686b7)
+![Capture22](https://github.com/Haifazahraa/Struktur-Data-Assigment/assets/162522762/f1b013d0-a61a-4797-bfd4-f3d92a1ff53b)
 
-Kode di atas digunakan untuk mencetak teks "ini adalah file code guided praktikan" ke layar menggunakan function cout untuk mengeksekusi nya.
+Dalam program ini, setiap node dalam linked list memiliki dua atribut yaitu `nama` yang merupakan nama seseorang, dan `usia` yang merupakan usia orang tersebut. Struktur `Node` digunakan untuk mendefinisikan node, sedangkan kelas `LinkedList` digunakan untuk mengelola linked list tersebut dengan berbagai operasi seperti insert (masukkan), delete (hapus), modify (ubah), dan display (tampilkan).
 
-#### Full code Screenshot:
-![240309_10h21m35s_screenshot](https://github.com/suxeno/Struktur-Data-Assignment/assets/111122086/41e9641c-ad4e-4e50-9ca4-a0215e336b04)
+Dalam contoh program ini, data nama dan usia dimasukkan ke dalam linked list, kemudian dilakukan beberapa operasi seperti penghapusan data, penambahan data setelah node tertentu, penambahan data di awal, perubahan data, dan akhirnya menampilkan seluruh data yang ada dalam linked list.
 
 ### 2. [Modifikasi Guided Double Linked List dilakukan dengan penambahan operasi untuk menambah data, menghapus, dan update di tengah / diurutan tertentu yang diminta. Selain itu, buatlah agar tampilannya menampilkan Nama produk dan harga.]
 ![Capture18](https://github.com/Haifazahraa/Struktur-Data-Assigment/assets/162522762/e6b929ba-efa8-4826-8a6a-d46e015c2bde)
@@ -508,24 +640,204 @@ Kode di atas digunakan untuk mencetak teks "ini adalah file code guided praktika
 
 ```C++
 #include <iostream>
+#include <string>
 using namespace std;
 
+class Node {
+public:
+    string nama_produk;
+    int harga;
+    Node* next;
+    Node* prev;
+
+    Node(string nama_produk, int harga) {
+        this->nama_produk = nama_produk;
+        this->harga = harga;
+        this->next = nullptr;
+        this->prev = nullptr;
+    }
+};
+
+class DoublyLinkedList {
+private:
+    Node* head;
+
+public:
+    DoublyLinkedList() {
+        head = nullptr;
+    }
+
+    void tambah_data(string nama_produk, int harga) {
+        Node* new_node = new Node(nama_produk, harga);
+        if (head == nullptr) {
+            head = new_node;
+        } else {
+            Node* current = head;
+            while (current->next != nullptr) {
+                current = current->next;
+            }
+            current->next = new_node;
+            new_node->prev = current;
+        }
+    }
+
+    void hapus_data(string nama_produk) {
+        Node* current = head;
+        while (current != nullptr) {
+            if (current->nama_produk == nama_produk) {
+                if (current->prev != nullptr) {
+                    current->prev->next = current->next;
+                }
+                if (current->next != nullptr) {
+                    current->next->prev = current->prev;
+                }
+                if (current == head) {
+                    head = current->next;
+                }
+                delete current;
+                return;
+            }
+            current = current->next;
+        }
+    }
+
+    void update_data(string nama_produk, int harga) {
+        Node* current = head;
+        while (current != nullptr) {
+            if (current->nama_produk == nama_produk) {
+                current->harga = harga;
+                return;
+            }
+            current = current->next;
+        }
+    }
+
+    void tambah_data_urutan_tertentu(string nama_produk, int harga, int urutan) {
+        Node* new_node = new Node(nama_produk, harga);
+        if (urutan == 1 || head == nullptr) {
+            new_node->next = head;
+            if (head != nullptr) {
+                head->prev = new_node;
+            }
+            head = new_node;
+        } else {
+            Node* current = head;
+            int count = 1;
+            while (current != nullptr && count < urutan - 1) {
+                current = current->next;
+                count++;
+            }
+            if (current == nullptr) {
+                cout << "Urutan melebihi jumlah produk yang ada" << endl;
+                return;
+            }
+            new_node->next = current->next;
+            new_node->prev = current;
+            if (current->next != nullptr) {
+                current->next->prev = new_node;
+            }
+            current->next = new_node;
+        }
+    }
+
+    void hapus_data_urutan_tertentu(int urutan) {
+        if (head == nullptr) {
+            return;
+        }
+        Node* current = head;
+        if (urutan == 1) {
+            head = current->next;
+            if (head != nullptr) {
+                head->prev = nullptr;
+            }
+            delete current;
+            return;
+        }
+        int count = 1;
+        while (current != nullptr && count < urutan) {
+            current = current->next;
+            count++;
+        }
+        if (current == nullptr) {
+            return;
+        }
+        if (current->next != nullptr) {
+            current->next->prev = current->prev;
+        }
+        if (current->prev != nullptr) {
+            current->prev->next = current->next;
+        }
+        delete current;
+    }
+
+    void hapus_seluruh_data() {
+        Node* current = head;
+        while (current != nullptr) {
+            Node* next_node = current->next;
+            delete current;
+            current = next_node;
+        }
+        head = nullptr;
+    }
+
+    void tampilkan_data() {
+        Node* current = head;
+        cout << "Nama Produk Harga" << endl;
+        while (current != nullptr) {
+            cout << current->nama_produk << " " << current->harga << endl;
+            current = current->next;
+        }
+    }
+};
+
 int main() {
-    cout << "ini adalah file code unguided praktikan" << endl;
+    DoublyLinkedList dll;
+
+    // Menambahkan data awal
+    dll.tambah_data("Originote", 60000);
+    dll.tambah_data("Somethinc", 150000);
+    dll.tambah_data("Skintific", 100000);
+    dll.tambah_data("Wardah", 50000);
+    dll.tambah_data("Hanasui", 30000);
+
+    // Modifikasi sesuai dengan case yang diberikan
+    dll.tambah_data_urutan_tertentu("Azarine", 65000, 3);
+    dll.hapus_data("Wardah");
+    dll.update_data("Hanasui", 55000);
+
+    // Tampilkan menu
+    cout << "Toko Skincare Purwokerto" << endl;
+    cout << "1. Tambah Data" << endl;
+    cout << "2. Hapus Data" << endl;
+    cout << "3. Update Data" << endl;
+    cout << "4. Tambah Data Urutan Tertentu" << endl;
+    cout << "5. Hapus Data Urutan Tertentu" << endl;
+    cout << "6. Hapus Seluruh Data" << endl;
+    cout << "7. Tampilkan Data" << endl;
+    cout << "8. Exit" << endl;
+
+    // Tampilkan data setelah modifikasi
+    dll.tampilkan_data();
+
     return 0;
+}
 }
 ```
 #### Output:
-![240302_00h00m06s_screenshot](https://github.com/suxeno/Struktur-Data-Assignment/assets/111122086/6d1727a8-fb77-4ecf-81ff-5de9386686b7)
+![Capture23](https://github.com/Haifazahraa/Struktur-Data-Assigment/assets/162522762/12092982-6507-4f7a-aa14-cbb8cc09d13e)
 
-Kode di atas digunakan untuk mencetak teks "ini adalah file code guided praktikan" ke layar menggunakan function cout untuk mengeksekusi nya.
-
-#### Full code Screenshot:
-![240309_10h21m35s_screenshot](https://github.com/suxeno/Struktur-Data-Assignment/assets/111122086/41e9641c-ad4e-4e50-9ca4-a0215e336b04)
+Program ini mengizinkan pengguna untuk mengelola data produk skincare dalam toko dengan berbagai operasi yang disediakan, termasuk menambah, menghapus, mengubah, dan menampilkan data dalam Doubly Linked List. Dua kelas utama yang digunakan adalah Node untuk struktur node dan DoublyLinkedList untuk mengelola operasi-operasi tersebut.
 
 
 ## Kesimpulan
-Ringkasan dan interpretasi pandangan kalia dari hasil praktikum dan pembelajaran yang didapat[1].
+
+1. Linked List adalah struktur data yang mengorganisir data secara sekuensial dan dinamis dengan menggunakan variabel pointer untuk menyambungkan node-node secara berurutan.
+
+2. Single Linked List merupakan bentuk Linked List yang menggunakan satu variabel pointer per node untuk menyimpan dan menghubungkan data-data, hanya memiliki satu arah, dan tidak memiliki kemampuan bolak-balik seperti Double Linked List.
+
+3. Double Linked List Circular adalah variasi dari Double Linked List yang memiliki pointer next dan prev yang menunjuk ke node berikutnya dan sebelumnya secara circular, membentuk suatu lingkaran.
+
+Dengan demikian, Linked List menyediakan fleksibilitas dalam pengelolaan data dengan variasi seperti Single Linked List dan Double Linked List Circular
 
 ## Referensi
 [1] https://osf.io/preprints/osf/u6qf7
