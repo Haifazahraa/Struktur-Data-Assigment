@@ -2,8 +2,19 @@
 <p align="center">Haifa Zahra Azzimmi</p>
 
 ## Dasar Teori
+A. Single Linked List
+1. Linked List Non Circular
+Setiap node pada linked list mempunyai field yang berisi data dan pointer ke node berikutnya & ke node sebelumnya. Untuk pembentukan node baru, mulanya pointer next dan prev akan menunjuk ke nilai NULL. Selanjutnya pointer prev akan menunjuk ke node sebelumnya, dan pointer next akan menunjuk ke node selanjutnya pada list.[1]
 
+2. Linked list Circular
+Single Linked List yang pointer nextnya menunjuk pada dirinya sendiri. Jika Single Linked List tersebut terdiri dari beberapa node, maka pointer next pada node terakhir akan menunjuk ke node terdepannya.[1]
 
+B. Double Linked List
+1. Double Linked List Circular
+Setiap node pada linked list mempunyai field yang berisi data dan pointer ke node berikutnya & ke node sebelumnya. Untuk pembentukan node baru, mulanya pointer next dan prevakan menunjuk ke dirinya sendiri. Jika sudah lebih dari satu node, maka pointer prev akan menunjuk ke node sebelumnya, dan pointer next akan menunjuk ke node sesudahnya.[2]
+
+2. Double Linked List Non-Circular
+adalah linked list dengan menggunakan pointer, dimana setiap node memiliki 3 field, yaitu 1 field pointer yang menunjuk pointer berikutnya (next), 1 field menunjuk pointer sebelumnya (prev), serta sebuah field yang berisi data untuk node tersebut.[2]
 
 ## Guided 
 
@@ -654,5 +665,5 @@ Alur program ini pertama memulai dengan list kosong kemudian menambahkan node ba
 
 
 ## Referensi
-[1] 
-[2] 
+[1] https://osf.io/preprints/osf/sczvp
+[2] https://osf.io/preprints/osf/tjnfa
