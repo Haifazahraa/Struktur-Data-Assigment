@@ -10,10 +10,328 @@
 ### 1. [Linked List Non Circular]
 
 ```C++
+#include <iostream>
+using namespace std;
+/// PROGRAM SINGLE LINKED LIST NON-CIRCULAR
+// Deklarasi Struct Node
+struct Node
+{
+    int data;
+    Node *next;
+};
+Node *head;
+Node *tail;
 
+// Inisialisasi Node
+void init()
+{
+    head = NULL;
+    tail = NULL;
+}
+
+// Pengecekan
+bool isEmpty()
+{
+    if (head == NULL)
+        return true;
+    else
+        return false;
+}
+
+// Tambah Depan
+void insertDepan(int nilai)
+{
+    // Buat Node baru
+    Node *baru = new Node;
+    baru->data = nilai;
+    baru->next = NULL;
+    if (isEmpty() == true)
+    {
+        head = tail = baru;
+        tail->next = NULL;
+    }
+    else
+    {
+        baru->next = head;
+        head = baru;
+    }
+}
+
+// Tambah Belakang
+void insertBelakang(int nilai)
+{
+    // Buat Node baru
+    Node *baru = new Node;
+    baru->data = nilai;
+    baru->next = NULL;
+    if (isEmpty() == true)
+    {
+        head = tail = baru;
+        tail->next = NULL;
+    }
+    else
+    {
+        tail->next = baru;
+        tail = baru;
+    }
+}
+
+// Hitung Jumlah List
+int hitungList()
+{
+    Node *hitung;
+    hitung = head;
+    int jumlah = 0;
+    while (hitung != NULL)
+    {
+        jumlah++;
+        hitung = hitung->next;
+    }
+    return jumlah;
+}
+
+// Tambah Tengah
+void insertTengah(int data, int posisi)
+{
+    if (posisi < 1 || posisi > hitungList())
+    {
+        cout << "Posisi diluar jangkauan" << endl;
+    }
+    else if (posisi == 1)
+    {
+        cout << "Posisi bukan posisi tengah" << endl;
+    }
+    else
+    {
+        Node *baru, *bantu;
+        baru = new Node();
+        baru->data = data;
+
+        // tranversing
+        bantu = head;
+        int nomor = 1;
+        while (nomor < posisi - 1)
+        {
+            bantu = bantu->next;
+            nomor++;
+        }
+
+        baru->next = bantu->next;
+        bantu->next = baru;
+    }
+}
+
+// Hapus Depan
+void hapusDepan()
+{
+    Node *hapus;
+    if (isEmpty() == false)
+    {
+        if (head->next != NULL)
+        {
+            hapus = head;
+            head = head->next;
+            delete hapus;
+        }
+        else
+        {
+            head = tail = NULL;
+        }
+    }
+    else
+    {
+        cout << "List kosong!" << endl;
+    }
+}
+
+// Hapus Belakang
+void hapusBelakang()
+{
+    Node *hapus;
+    Node *bantu;
+    if (isEmpty() == false)
+    {
+        if (head != tail)
+        {
+            hapus = tail;
+            bantu = head;
+            while (bantu->next != tail)
+            {
+                bantu = bantu->next;
+            }
+            tail = bantu;
+            tail->next = NULL;
+            delete hapus;
+        }
+        else
+        {
+            head = tail = NULL;
+        }
+    }
+    else
+    {
+        cout << "List kosong!" << endl;
+    }
+}
+
+// Hapus Tengah
+void hapusTengah(int posisi)
+{
+    Node *bantu, *hapus, *sebelum;
+    if (posisi < 1 || posisi > hitungList())
+    {
+        cout << "Posisi di luar jangkauan" << endl;
+    }
+    else if (posisi == 1)
+    {
+        cout << "Posisi bukan posisi tengah" << endl;
+    }
+    else
+    {
+        int nomor = 1;
+        bantu = head;
+        while (nomor <= posisi)
+        {
+            if (nomor == posisi - 1)
+            {
+                sebelum = bantu;
+            }
+            if (nomor == posisi)
+            {
+                hapus = bantu;
+            }
+            bantu = bantu->next;
+            nomor++;
+        }
+        sebelum->next = bantu;
+        delete hapus;
+    }
+}
+
+// Ubah Depan
+void ubahDepan(int data)
+{
+    if (isEmpty() == 0)
+    {
+        head->data = data;
+    }
+    else
+    {
+        cout << "List masih kosong!" << endl;
+    }
+}
+
+// Ubah Tengah
+void ubahTengah(int data, int posisi)
+{
+    Node *bantu;
+    if (isEmpty() == 0)
+    {
+        if (posisi < 1 || posisi > hitungList())
+        {
+            cout << "Posisi di luar jangkauan" << endl;
+        }
+        else if (posisi == 1)
+        {
+        }
+        else
+        {
+            cout << "Posisi bukan posisi tengah" << endl;
+
+            bantu = head;
+            int nomor = 1;
+            while (nomor < posisi)
+            {
+                bantu = bantu->next;
+                nomor++;
+            }
+            bantu->data = data;
+        }
+    }
+    else
+    {
+        cout << "List masih kosong!" << endl;
+    }
+}
+
+// Ubah Belakang
+void ubahBelakang(int data)
+{
+    if (isEmpty() == 0)
+    {
+        tail->data = data;
+    }
+    else
+    {
+        cout << "List masih kosong!" << endl;
+    }
+}
+
+// Hapus List
+void clearList()
+{
+    Node *bantu, *hapus;
+    bantu = head;
+    while (bantu != NULL)
+    {
+        hapus = bantu;
+        bantu = bantu->next;
+        delete hapus;
+    }
+    head = tail = NULL;
+    cout << "List berhasil terhapus!" << endl;
+}
+
+// Tampilkan List
+void tampil()
+{
+    Node *bantu;
+    bantu = head;
+    if (isEmpty() == false)
+    {
+        while (bantu != NULL)
+        {
+            cout << bantu->data << ends;
+            bantu = bantu->next;
+        }
+        cout << endl;
+    }
+    else
+    {
+        cout << "List masih kosong!" << endl;
+    }
+}
+
+int main()
+{
+    init();
+    insertDepan(3);
+    tampil();
+    insertBelakang(5);
+    tampil();
+    insertDepan(2);
+    tampil();
+    insertDepan(1);
+    tampil();
+    hapusDepan();
+    tampil();
+    hapusBelakang();
+    tampil();
+    insertTengah(7, 2);
+    tampil();
+    hapusTengah(2);
+    tampil();
+    ubahDepan(1);
+    tampil();
+    ubahBelakang(8);
+    tampil();
+    ubahTengah(11, 2);
+    tampil();
+    return 0;
+}
 
 ```
-
+Program ini merupakan program single linked list non-circular, terdapat struktur node yaitu data: menyimpan data integer dan next: pointer yang menunjuk ke node berikutnya. Ada juga deklarasi variabel global pada program ini yaitu head dan tail. Alur program ini pertama memulai dengan list kosong selanjutnya menambahkan node baru didepan dan belakang list kemudian menghitung jumlah node dalam list kemudian menghapus node pertama da terakhir dari list selanjutnya menambahkan node baru di tengah list kemudian menghapus node di tengah list selanjutnya mengubah data node pertama, tengah dan terakhir kemudian menampilkan data semua node dalam list dan menghapus semua node dari list. Program ini menggunakan pointer untuk menghubungkan node-node dalam list. List non-circular memiliki node terakhir dengan pointer NULL.
 
 ### 2. [Linked List Circular]
 
@@ -301,6 +619,8 @@ int main()
     return 0;
 }
 ```
+Pada program ini terdapat Struktur Node yang mendefinisikan dua elemen yaitu data: menyimpan data string dan next: pointer yang menunjuk ke node berikutnya. Pada program ini menggunakan variabel global antara lain head, tail, baru, bantu dan hapus.
+Alur program ini pertama memulai dengan list kosong kemudian menambahkan node baru ke depan dan belakang list kemudian menghitung jumlah node dalam list kemudian menghapus node pertama dan terakhir dari list selanjutnya menambahkan node baru ditengah list kemudian menghapus node tengah list selanjutnya menampilkan data semua node dalam list dan menghapus semua node dari list terakhir. Program ini menggunakan pointer untuk menghubungkan node-node dalam list, List circular tidak memiliki node terakhir dengan pointer NULL. Node terakhir menunjuk ke node pertama.
 
 ## Unguided 
 
@@ -314,11 +634,8 @@ int main()
 ```C++
 ```
 #### Output:
-![Capture22](https://github.com/Haifazahraa/Struktur-Data-Assigment/assets/162522762/f1b013d0-a61a-4797-bfd4-f3d92a1ff53b)
 
-Dalam program ini, setiap node dalam linked list memiliki dua atribut yaitu `nama` yang merupakan nama seseorang, dan `usia` yang merupakan usia orang tersebut. Struktur `Node` digunakan untuk mendefinisikan node, sedangkan kelas `LinkedList` digunakan untuk mengelola linked list tersebut dengan berbagai operasi seperti insert (masukkan), delete (hapus), modify (ubah), dan display (tampilkan).
 
-Dalam contoh program ini, data nama dan usia dimasukkan ke dalam linked list, kemudian dilakukan beberapa operasi seperti penghapusan data, penambahan data setelah node tertentu, penambahan data di awal, perubahan data, dan akhirnya menampilkan seluruh data yang ada dalam linked list.
 
 ### 2. [Setelah membuat menu tersebut, masukkan data sesuai urutan berikut, lalu tampilkan data yang telah dimasukkan. (Gunakan insert depan, belakang atau tengah)]
 ![image](https://github.com/Haifazahraa/Struktur-Data-Assigment/assets/162522762/4f5af637-7f6c-4edd-8b4e-bacdd64c6ca6)
@@ -329,7 +646,7 @@ Dalam contoh program ini, data nama dan usia dimasukkan ke dalam linked list, ke
 ```
 #### Output:
 
-Program ini mengizinkan pengguna untuk mengelola data produk skincare dalam toko dengan berbagai operasi yang disediakan, termasuk menambah, menghapus, mengubah, dan menampilkan data dalam Doubly Linked List. Dua kelas utama yang digunakan adalah Node untuk struktur node dan DoublyLinkedList untuk mengelola operasi-operasi tersebut.
+
 
 
 ## Kesimpulan
