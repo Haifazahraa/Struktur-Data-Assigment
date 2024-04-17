@@ -2,6 +2,18 @@
 <p align="center">Haifa Zahra Azzimmi</p>
 
 ## Dasar Teori
+Hash Table adalah struktur data yang efisien dalam operasi penambahan (insertion) dan pencarian (searching), diimplementasikan menggunakan array. Penambahan dan pencarian data dalam Hash Table bergantung pada fungsi hash yang digunakan, yang memetakan elemen-elemen ke indeks-ideks dalam Hash Table. Fungsi hash yang baik memiliki beberapa karakteristik penting, seperti mudah dihitung, mampu mendistribusikan key secara merata, dan meminimalkan jumlah collision (tabrakan) yang terjadi.
+
+Terdapat beberapa teknik yang dapat digunakan dalam fungsi hash, di antaranya adalah:
+- Truncation, yang mengambil beberapa digit dari key sebagai indeks.
+- Folding, yang menjumlahkan beberapa digit dari key dan menggunakan hasil penjumlahan sebagai indeks.
+- Modular, yang menggunakan sisa hasil bagi dari key dengan ukuran hash table sebagai indeks.
+
+Collision terjadi ketika dua atau lebih key dipetakan ke sel yang sama dalam array hash. Untuk menangani collision, terdapat dua pendekatan utama dalam kategorisasi hash table:
+- Closed Hashing (Open Addressing), di mana collision ditangani dengan cara menempatkan key tambahan pada sel yang berbeda dalam array yang sama.
+- Open Hashing (Separate Chaining), di mana collision ditangani dengan membuat linked list di setiap sel array yang mengalami collision, sehingga key tambahan dapat disimpan pada posisi yang sesuai dalam linked list tersebut.
+
+Dengan demikian, Hash Table menjadi sebuah struktur data yang sangat efisien dalam mengorganisir dan mengakses data, terutama ketika ukuran data sangat besar dan efisiensi operasi insertion dan searching menjadi kritis.
 
 ## Guided 
 
@@ -285,21 +297,141 @@ Program ini merupakan implementasi dari tabel hash menggunakan vektor untuk mena
 //Haifa Zahra Azzimmi
 //2311102163
 
+#include <iostream>
+#include <vector>
+#include <string>
 
+using namespace std;
 
+const int TABLE_SIZE = 10;
+
+// Struktur data untuk setiap mahasiswa
+struct Student {
+    string nim;
+    int grade;
+    Student(string nim, int grade) : nim(nim), grade(grade) {}
+};
+
+// Node untuk menyimpan data mahasiswa
+struct HashNode {
+    vector<Student> students;
+};
+
+// Kelas Hash Table
+class HashTable {
+private:
+    vector<HashNode> table;
+
+public:
+    HashTable() : table(TABLE_SIZE) {}
+
+    // Fungsi hash untuk menentukan indeks penyimpanan berdasarkan NIM
+    int hashFunc(string nim) {
+        int hash_val = 0;
+        for (char c : nim) {
+            hash_val += c;
+        }
+        return hash_val % TABLE_SIZE;
+    }
+
+    // Fungsi untuk menambah data mahasiswa
+    void insert(string nim, int grade) {
+        int index = hashFunc(nim);
+        table[index].students.push_back(Student(nim, grade));
+    }
+
+    // Fungsi untuk menghapus data mahasiswa berdasarkan NIM
+    void remove(string nim) {
+        int index = hashFunc(nim);
+        vector<Student>& students = table[index].students;
+        for (auto it = students.begin(); it != students.end(); ++it) {
+            if (it->nim == nim) {
+                students.erase(it);
+                break;
+            }
+        }
+    }
+
+    // Fungsi untuk mencari data mahasiswa berdasarkan NIM
+    void searchByNIM(string nim) {
+        int index = hashFunc(nim);
+        vector<Student>& students = table[index].students;
+        for (const auto& student : students) {
+            if (student.nim == nim) {
+                cout << "Mahasiswa dengan NIM " << nim << " ditemukan dengan nilai " << student.grade << endl;
+                return;
+            }
+        }
+        cout << "Mahasiswa dengan NIM " << nim << " tidak ditemukan" << endl;
+    }
+
+    // Fungsi untuk mencari data mahasiswa berdasarkan rentang nilai (80 - 90)
+    void searchByGradeRange() {
+        cout << "Mahasiswa dengan nilai antara 80 dan 90:" << endl;
+        for (const auto& node : table) {
+            for (const auto& student : node.students) {
+                if (student.grade >= 80 && student.grade <= 90) {
+                    cout << "NIM: " << student.nim << ", Nilai: " << student.grade << endl;
+                }
+            }
+        }
+    }
+};
+
+int main() {
+    HashTable studentTable;
+    int choice;
+    string nim;
+    int grade;
+
+    do {
+        cout << "\nMenu:\n1. Tambah Data Mahasiswa\n2. Hapus Data Mahasiswa\n3. Cari Data Mahasiswa berdasarkan NIM\n4. Cari Data Mahasiswa berdasarkan Rentang Nilai (80 - 90)\n5. Keluar\n";
+        cout << "Pilih: ";
+        cin >> choice;
+
+        switch (choice) {
+        case 1:
+            cout << "Masukkan NIM mahasiswa: ";
+            cin >> nim;
+            cout << "Masukkan nilai mahasiswa: ";
+            cin >> grade;
+            studentTable.insert(nim, grade);
+            break;
+        case 2:
+            cout << "Masukkan NIM mahasiswa yang akan dihapus: ";
+            cin >> nim;
+            studentTable.remove(nim);
+            break;
+        case 3:
+            cout << "Masukkan NIM mahasiswa yang ingin dicari: ";
+            cin >> nim;
+            studentTable.searchByNIM(nim);
+            break;
+        case 4:
+            studentTable.searchByGradeRange();
+            break;
+        case 5:
+            cout << "Program selesai." << endl;
+            break;
+        default:
+            cout << "Pilihan tidak valid. Ulangi." << endl;
+            break;
+        }
+    } while (choice != 5);
+
+    return 0;
+}
 ```
 #### Output:
+![image](https://github.com/Haifazahraa/Struktur-Data-Assigment/assets/162522762/62d6e8aa-eeae-4ebc-9042-1abebdfb6c2a)
+![image](https://github.com/Haifazahraa/Struktur-Data-Assigment/assets/162522762/a32e3205-789b-4f79-9bac-94d7f0b21c46)
+![image](https://github.com/Haifazahraa/Struktur-Data-Assigment/assets/162522762/1c75ca32-68af-40ce-89e5-4966f78f7a4d)
 
-
-
-
-
-
-#### Output
+Program di atas adalah implementasi dari Hash Table dalam C++. Program ini memungkinkan pengguna untuk menyimpan data mahasiswa berupa NIM dan nilai dalam sebuah hash table dengan ukuran tetap. 
 
 ## Kesimpulan
+Hash Table adalah struktur data efisien yang menggunakan fungsi hash untuk menetapkan elemen ke indeks array. Fungsi hash yang baik memungkinkan distribusi key yang merata dan mengurangi collision. Ada teknik hashing seperti Truncation, Folding, dan Modular. Collision diatasi melalui Closed Hashing (Open Addressing) atau Open Hashing (Separate Chaining). Hash Table memungkinkan operasi penambahan dan pencarian yang cepat, ideal untuk data besar dan efisiensi operasi yang penting.
 
 
 ## Referensi
-[1] https://osf.io/preprints/osf/sczvp
-[2] https://osf.io/preprints/osf/tjnfa
+[1] http://repository.uin-malang.ac.id/15252/7/15252.pdf
