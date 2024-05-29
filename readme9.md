@@ -485,6 +485,9 @@ int main()
 }
 
 ```
+
+Program ini menyediakan berbagai fungsi untuk membangun dan mengelola pohon biner, termasuk penambahan node, penghapusan node, dan penelusuran pohon dengan metode preOrder, inOrder, dan postOrder. 
+
 ## Unguided 
 
 ### 1. [Buatlah program graph dengan menggunakan inputan user untuk menghitung jarak dari sebuah kota ke kota lainnya.]
@@ -492,11 +495,62 @@ int main()
 ```C++
 //Haifa Zahra Azzimmi
 //2311102163
+#include <iostream>
+#include <vector>
+#include <string>
 
+using namespace std;
+
+int main() {
+    int num_cities;
+    int haifa_zahra_azzimmi_2311102163; // NIM
+    cout << "Masukkan jumlah kota: ";
+    cin >> num_cities;
+
+    vector<string> cities(num_cities);
+    cout << "Masukkan nama kota:\n";
+    for (int i = 0; i < num_cities; i++) {
+        cout << "Kota " << i + 1 << ": ";
+        cin >> cities[i];
+    }
+
+    vector<vector<int>> distances(num_cities, vector<int>(num_cities, 0));
+    cout << "Masukkan jarak antar kota:\n";
+    for (int i = 0; i < num_cities; i++) {
+        for (int j = 0; j < num_cities; j++) {
+            if (i != j) {
+                cout << "Jarak dari " << cities[i] << " ke " << cities[j] << ": ";
+                cin >> distances[i][j];
+            }
+        }
+    }
+
+    // Mencetak header untuk matriks jarak antar kota
+    cout << "\n    ";
+    for (const auto& city : cities) {
+        cout << city << "  ";
+    }
+    cout << endl;
+
+    // Mencetak baris untuk matriks jarak antar kota
+    for (int i = 0; i < num_cities; i++) {
+        cout << cities[i] << "  ";
+        for (int j = 0; j < num_cities; j++) {
+            cout << distances[i][j] << "  ";
+        }
+        cout << endl;
+    }
+
+    return 0;
+}
 
 ```
 #### Output:
+![image](https://github.com/Haifazahraa/Struktur-Data-Assigment/assets/162522762/8ea60299-ab7e-4340-bd11-43d31eb85080)
 
+Program ini meminta pengguna untuk memasukkan jumlah kota (num_cities) dan nama masing-masing kota.
+Program kemudian meminta input untuk jarak antar setiap kota, kecuali jarak dari kota ke dirinya sendiri yang secara otomatis diatur ke 0.
+Matriks jarak antar kota dicetak ke layar, dengan header dan baris yang menunjukkan nama kota.
 
 
 ### 2. [Modifikasi guided tree diatas dengan program menu menggunakan input data tree dari user dan berikan fungsi tambahan untuk menampilkan node child dan descendant dari node yang diinput kan!]
@@ -504,10 +558,93 @@ int main()
 ```C++
 //Haifa Zahra Azzimmi
 //2311102163
+#include <iostream>
+#include <vector>
+#include <string>
 
+using namespace std;
+
+struct TreeNode {
+    string data;
+    vector<TreeNode*> children;
+
+    TreeNode(const string& value) : data(value) {}
+};
+
+class Tree {
+private:
+    TreeNode* root;
+
+public:
+    Tree() : root(nullptr) {}
+
+    void insertNode(TreeNode* parent, const string& value) {
+        TreeNode* newNode = new TreeNode(value);
+        if (!root) {
+            root = newNode;
+            cout << "Node " << value << " berhasil ditambahkan sebagai root.\n";
+        } else {
+            parent->children.push_back(newNode);
+            cout << "Node " << value << " berhasil ditambahkan sebagai child dari " << parent->data << ".\n";
+        }
+    }
+
+    void displayChildAndDescendant(TreeNode* node) {
+        if (!node) return;
+
+        if (!node->children.empty()) {
+            cout << "Node " << node->data << " memiliki child:\n";
+            for (TreeNode* child : node->children) {
+                cout << child->data << " ";
+            }
+            cout << endl;
+        }
+
+        for (TreeNode* child : node->children) {
+            displayChildAndDescendant(child);
+        }
+    }
+
+    TreeNode* getRoot() const {
+        return root;
+    }
+};
+
+int main() {
+    Tree tree;
+    TreeNode* parentNode = nullptr;
+
+    int numNodes;
+    cout << "Masukkan jumlah node tree: ";
+    cin >> numNodes;
+
+    for (int i = 0; i < numNodes; i++) {
+        string nodeName;
+        cout << "Masukkan nama node " << i + 1 << ": ";
+        cin >> nodeName;
+
+        if (!tree.getRoot()) {
+            tree.insertNode(nullptr, nodeName);
+            parentNode = tree.getRoot();
+        } else {
+            tree.insertNode(parentNode, nodeName);
+        }
+    }
+
+    cout << "\nTree yang telah dibuat:\n";
+    tree.displayChildAndDescendant(tree.getRoot());
+
+    return 0;
+}
 
 ```
 ### Output
+![image](https://github.com/Haifazahraa/Struktur-Data-Assigment/assets/162522762/ea1131f5-30f1-437f-ad66-3e9adb0d225f)
+
+Program ini memungkinkan pengguna untuk memasukkan data tree sesuai dengan jumlah node yang diinginkan.
+Setiap node memiliki nama yang dimasukkan oleh pengguna.
+Program menampilkan struktur tree yang telah dibuat, beserta child dan descendant dari setiap node.
+Fungsi displayChildAndDescendant ditambahkan untuk menampilkan informasi tentang child dan descendant dari sebuah node. Program ini memanfaatkan struktur data tree untuk mengelola hubungan antara node-node dalam tree yang dibuat oleh pengguna.
 
 
 ### Kesimpulan 
